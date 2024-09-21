@@ -1,0 +1,51 @@
+{% schema %}
+{
+  "name": "Accordion",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "accordion_item",
+      "name": "Accordion Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "item_title",
+          "label": "Item Title",
+          "default": "Compatible Devices"
+        },
+        {
+          "type": "textarea",
+          "id": "item_content",
+          "label": "Item Content",
+          "default": "iPhone 16 Pro Max"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Accordion",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="accordion">
+  {% for block in section.blocks %}
+  <div class="accordion-item">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="header-left">
+        <i class="fas fa-check-circle tick-icon"></i>
+        <h2>{{ block.settings.item_title }}</h2>
+      </div>
+      <span class="accordion-icon">+</span>
+    </div>
+    <div class="accordion-content" style="display: none;">
+      <ul>
+        <li>{{ block.settings.item_content }}</li>
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+</div>
