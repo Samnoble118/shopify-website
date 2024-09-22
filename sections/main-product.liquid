@@ -116,28 +116,27 @@
                     </div>
                     <div class="accordion-content" style="display: none;">
                       <ul>
-                        <li>iPhone 16 Pro Max</li>
+                        <li>{{ product.metafields.product.compatible_devices }}</li>
                       </ul>
                     </div>
                   </div>
                 </div>
-        </div>
-      </div>
+      
+        <script>
+          function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.accordion-icon');
 
-<script>
-  function toggleAccordion(header) {
-    const content = header.nextElementSibling;
-    const icon = header.querySelector('.accordion-icon');
+            if (content.style.display === "block") {
+              content.style.display = "none";
+              icon.innerText = "+";
+            } else {
+              content.style.display = "block";
+              icon.innerText = "-";
+            }
+          }
+        </script>
 
-    if (content.style.display === "block") {
-      content.style.display = "none";
-      icon.innerText = "+";
-    } else {
-      content.style.display = "block";
-      icon.innerText = "-";
-    }
-  }
-</script>
               {%- when 'price' -%}
                 <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
                   {%- render 'price',
@@ -225,11 +224,67 @@
                   {%- endif -%}
                 </p>
               {%- when 'description' -%}
-                {%- if product.description != blank -%}
-                  <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
-                    {{ product.description }}
+                <div class="product__accordion">
+                  <!-- Accordion: Description -->
+                  <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                      <h2>Description</h2>
+                      <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content" style="display: none;">
+                      <p>{{ product.description }}</p>
+                    </div>
                   </div>
-                {%- endif -%}
+
+                  <!-- Accordion: Features -->
+                  <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                      <h2>Features</h2>
+                      <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content" style="display: none;">
+                      <p>{{ product.metafields.product.features }}</p>
+                    </div>
+                  </div>
+
+                  <!-- Accordion: Dimensions -->
+                  <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                      <h2>Dimensions</h2>
+                      <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content" style="display: none;">
+                      <p>{{ product.metafields.product.dimensions }}</p>
+                    </div>
+                  </div>
+
+                  <!-- Accordion: Materials -->
+                  <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                      <h2>Materials</h2>
+                      <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content" style="display: none;">
+                      <p>{{ product.metafields.product.materials }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <script>
+                function toggleAccordion(element) {
+                  var content = element.nextElementSibling;
+                  if (content.style.display === "none" || !content.style.display) {
+                    content.style.display = "block";
+                    element.querySelector('.accordion-icon').textContent = '-';
+                  } else {
+                    content.style.display = "none";
+                    element.querySelector('.accordion-icon').textContent = '+';
+                  }
+                }
+                </script>
+
+                
+
               {%- when 'sku' -%}
                 <p
                   class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.sku.size == 0 %} visibility-hidden{% endif %}"
@@ -403,6 +458,10 @@
                       </price-per-item>
                     {%- endif -%}
                   </div>
+
+
+
+                  
                   <div class="quantity__rules caption" id="Quantity-Rules-{{ section.id }}">
                     {%- if product.selected_or_first_available_variant.quantity_rule.increment > 1 -%}
                       <span class="divider">
@@ -542,6 +601,10 @@
                     </p>
                   </div>
                 {%- endif -%}
+
+               
+
+
               {%- when 'complementary' -%}
                 <product-recommendations
                   class="complementary-products quick-add-hidden{% if block.settings.make_collapsible_row %} is-accordion{% endif %}{% if block.settings.enable_quick_add %} complementary-products-contains-quick-add{% endif %}"
@@ -702,6 +765,35 @@
         </section>
       </div>
     </div>
+
+    <!-- Desktop Banner 1 -->
+{%- if product.metafields.custom.banner_image_1 != blank -%}
+<div class="product-banner desktop-banner">
+  <img src="{{ product.metafields.custom.banner_image_1 | image_url }}" alt="Desktop Banner 1" />
+</div>
+{%- endif -%}
+
+<!-- Mobile Banner 1 -->
+{%- if product.metafields.custom.banner_image_mobile_1 != blank -%}
+<div class="product-banner mobile-banner">
+  <img src="{{ product.metafields.custom.banner_image_mobile_1 | image_url }}" alt="Mobile Banner 1" />
+</div>
+{%- endif -%}
+
+<!-- Desktop Banner 2 -->
+{%- if product.metafields.custom.banner_image_2 != blank -%}
+<div class="product-banner desktop-banner">
+  <img src="{{ product.metafields.custom.banner_image_2 | image_url }}" alt="Desktop Banner 2" />
+</div>
+{%- endif -%}
+
+<!-- Mobile Banner 2 -->
+{%- if product.metafields.custom.banner_image_mobile_2 != blank -%}
+<div class="product-banner mobile-banner">
+  <img src="{{ product.metafields.custom.banner_image_mobile_2 | image_url }}" alt="Mobile Banner 2" />
+</div>
+{%- endif -%}
+
 
     {% render 'product-media-modal', variant_images: variant_images %}
 
